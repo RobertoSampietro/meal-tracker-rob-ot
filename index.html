@@ -688,7 +688,10 @@ function renderSettings(){
     <button class="man-add" onclick="addFoodToDB()">+ Aggiungi al database</button>
   </div>
   <div class="card">
-    <div class="card-title">Storico macro (ultimi 30 giorni)</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div class="card-title" style="margin-bottom:0">Storico macro (ultimi 30 giorni)</div>
+      <button onclick="resetApp()" style="background:none;border:1px solid rgba(255,82,82,.4);border-radius:5px;padding:3px 8px;font-size:10px;color:var(--red);cursor:pointer">Reset</button>
+    </div>
     <div style="font-size:10px;color:var(--text3);margin-bottom:8px">Verde = in target · Rosso = fuori target · 🏋️ = giorno sport</div>
     ${histHtml}
   </div>
@@ -698,6 +701,13 @@ function renderSettings(){
   </div>`;
 }
 
+function resetApp(){
+  if(!confirm('Sei sicuro di voler resettare tutti i dati?\nQuesta azione è irreversibile.'))return;
+  const code=prompt('Inserisci 9456 per confermare il reset:');
+  if(code!=='9456'){alert('Codice errato. Reset annullato.');return;}
+  S.logs={};S.credits=0;S.castlePieces=0;S.creditedDays={};S.sportDays={};
+  save();updateHeader();renderSettings();alert('✅ Dati resettati.');
+}
 function toggleDbUnit(){const t=document.getElementById('db-type').value;document.getElementById('db-unit-row').style.display=t==='unit'?'block':'none'}
 function addFoodToDB(){
   const name=document.getElementById('db-name').value.trim();if(!name){alert('Inserisci un nome');return}
